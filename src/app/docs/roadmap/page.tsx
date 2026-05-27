@@ -8,17 +8,17 @@ export const metadata = { title: "Roadmap" };
 const phases = [
   { id: "P0", name: "Workspace, releases, website", status: "done" },
   { id: "P1", name: "Lexer + fixtures", status: "done" },
-  { id: "P2", name: "Parser snapshots, recovery", status: "in progress" },
+  { id: "P2", name: "Parser snapshots, recovery", status: "partial" },
   { id: "P3", name: "Multi-file crates, imports", status: "planned" },
-  { id: "P4", name: "50+ typeck tests, full LANGUAGE.md", status: "planned" },
-  { id: "P5", name: "MIR tests, verbose IR dumps, SSA", status: "planned" },
-  { id: "P6", name: "LLVM feature flag + C backend", status: "planned" },
-  { id: "P7", name: "Class + enum + interface codegen", status: "planned" },
-  { id: "P8", name: "Interface dispatch + monomorphization", status: "planned" },
-  { id: "P9", name: "Real borrowck + drops", status: "planned" },
-  { id: "P10", name: "stdlib/, rpythonc test", status: "planned" },
+  { id: "P4", name: "50+ typeck tests, full LANGUAGE.md", status: "partial" },
+  { id: "P5", name: "MIR tests, verbose IR dumps, SSA", status: "partial" },
+  { id: "P6", name: "LLVM feature flag + C backend", status: "partial" },
+  { id: "P7", name: "Class + enum + interface codegen", status: "partial" },
+  { id: "P8", name: "Interface dispatch + monomorphization", status: "partial" },
+  { id: "P9", name: "Real borrowck + drops", status: "partial" },
+  { id: "P10", name: "stdlib/, rpythonc test", status: "partial" },
   { id: "P11", name: "match, for, modules, UI tests", status: "planned" },
-  { id: "P12", name: "DWARF, cache, benches, cargo install", status: "planned" },
+  { id: "P12", name: "DWARF, cache, benches, cargo install", status: "partial" },
 ];
 
 export default async function RoadmapPage() {
@@ -98,7 +98,8 @@ export default async function RoadmapPage() {
           Compiler — <code className="font-mono">run</code>,{" "}
           <code className="font-mono">build</code>, <code className="font-mono">test</code>, documented CLI
         </li>
-        <li>Examples — hello, gcd, interfaces_demo, classes_demo on release binaries</li>
+        <li>Examples — 15+ programs (hello, gcd, OOP, HTTP sketches) on release binaries</li>
+        <li>Tutorials — install, types, control flow, HTTP roadmap, compiler tour</li>
         <li>Docs — LANGUAGE.md matches compiler behavior</li>
         <li>CI — Linux + macOS release tarballs</li>
       </ol>

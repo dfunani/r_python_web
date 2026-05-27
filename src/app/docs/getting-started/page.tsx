@@ -16,9 +16,10 @@ export default async function GettingStartedPage() {
       description="Install rpythonc and run your first .rpy program."
     >
       <p>
-        <strong>rPython</strong> is a memory-safe, statically typed language with
-        Python-shaped syntax, compiled via a Rust toolchain. It is{" "}
-        <strong>not</strong> CPython and unrelated to PyPy&apos;s RPython subset.
+        <strong>rPython</strong> is a memory-safe, <strong>statically typed</strong>{" "}
+        language with Python-shaped syntax, compiled via a Rust toolchain. Types are
+        checked at compile time — it is <strong>not</strong> a dynamic language like
+        CPython, and it is unrelated to PyPy&apos;s RPython subset.
       </p>
 
       <h2>1. Install</h2>
@@ -53,7 +54,10 @@ rpythonc --run examples/hello.rpy`}</CodeBlock>
       <h2>4. Explore</h2>
       <ul>
         <li>
-          <Link href="/docs/examples">Examples</Link> — hello, gcd, interfaces
+          <Link href="/docs/tutorials">Tutorials</Link> — guided v2 lessons
+        </li>
+        <li>
+          <Link href="/docs/examples">Examples</Link> — 15+ programs including HTTP sketches
         </li>
         <li>
           <Link href="/docs/language">Language</Link> — classes, interfaces, vs Python

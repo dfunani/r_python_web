@@ -12,10 +12,67 @@ export default async function LanguagePage() {
   return (
     <DocPage
       title="Language reference"
-      description="How rPython differs from Python and Rust terminology."
+      description="Statically typed, compiled rPython — not dynamic CPython."
     >
-      <p className="pill pill-warn">
-        Living document — see the main repo for the full implemented subset.
+      <p className="pill pill-ok mb-4">
+        Static types · compile-time checks · not a dynamic language
+      </p>
+
+      <h2>Static typing (not dynamic)</h2>
+      <p>
+        rPython is a <strong>statically typed</strong> language. Types are known and
+        checked when you compile (or when you <code className="font-mono">rpythonc run</code>
+        , which still runs the full type checker). This is fundamentally different from
+        CPython, where types are attached to objects at runtime and can change freely.
+      </p>
+      <CodeBlock title="Valid — types match">{`def main() -> int:
+    a: str = "hello"
+    n: int = 42
+    print(a)
+    return 0`}</CodeBlock>
+      <CodeBlock title="Compile error — annotation disagrees with value">{`def main() -> int:
+    a: int = "hello"   # ERROR: expected \`int\`, found \`str\`
+    return 0`}</CodeBlock>
+      <p>
+        The compiler rejects the second program before execution. There is no fallback to
+        dynamic typing, no <code className="font-mono">Any</code> escape hatch in v2.0, and
+        no implicit conversion from <code className="font-mono">str</code> to{" "}
+        <code className="font-mono">int</code>.
+      </p>
+
+      <h3>How to write types</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Form</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Annotated local</td>
+            <td>
+              <code className="font-mono">a: str = &quot;hello&quot;</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Function params / return</td>
+            <td>
+              <code className="font-mono">def gcd(a: int, b: int) -&gt; int:</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Struct fields</td>
+            <td>
+              <code className="font-mono">x: int</code> inside{" "}
+              <code className="font-mono">struct Point:</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        See <Link href="/docs/examples#static-typing">static_typing.rpy</Link> and the{" "}
+        <Link href="/docs/tutorials/static-typing">static typing tutorial</Link>.
       </p>
 
       <h2>Compiled vs Python (CPython)</h2>
@@ -32,24 +89,31 @@ export default async function LanguagePage() {
             <td>Ahead-of-time compilation via <code className="font-mono">rpythonc</code></td>
           </tr>
           <tr>
-            <td>Dynamic typing</td>
-            <td>Static types with inference and annotations</td>
+            <td>
+              <strong>Dynamic</strong> typing — types follow values at runtime
+            </td>
+            <td>
+              <strong>Static</strong> typing — types fixed at compile time; mismatches are errors
+            </td>
           </tr>
           <tr>
             <td>GC + reference semantics</td>
             <td>Memory-safe ownership model (v2 roadmap)</td>
           </tr>
           <tr>
-            <td><code className="font-mono">.py</code> files</td>
-            <td><code className="font-mono">.rpy</code> source files</td>
+            <td>
+              <code className="font-mono">.py</code> files
+            </td>
+            <td>
+              <code className="font-mono">.rpy</code> source files
+            </td>
           </tr>
         </tbody>
       </table>
       <p>
-        Syntax feels familiar — indentation blocks, <code className="font-mono">def</code>,{" "}
-        <code className="font-mono">if</code>/<code className="font-mono">while</code>, calls
-        — but you must compile or use <code className="font-mono">rpythonc run</code> to
-        execute.
+        Syntax <em>looks</em> familiar — indentation blocks, <code className="font-mono">def</code>,{" "}
+        <code className="font-mono">if</code>/<code className="font-mono">while</code> — but
+        semantics are those of a compiled, typed language.
       </p>
 
       <h2>class vs struct</h2>
@@ -79,10 +143,9 @@ struct Point2:
         keyword may still parse with a deprecation warning.
       </p>
       <CodeBlock title="interfaces_demo.rpy">{`interface Show:
-    def show(self) -> str:
-        ...
+    def show(self) -> str
 
-class Point:
+struct Point:
     x: int
     y: int
 
@@ -94,8 +157,10 @@ impl Show for Point:
       <p>Single-file programs with:</p>
       <ul>
         <li>
-          <code className="font-mono">def</code> functions, annotations,{" "}
-          <code className="font-mono">return</code>
+          <code className="font-mono">def</code> functions with typed parameters and returns
+        </li>
+        <li>
+          Annotated locals: <code className="font-mono">a: str = &quot;hello&quot;</code>
         </li>
         <li>
           <code className="font-mono">if</code> / <code className="font-mono">elif</code> /{" "}
@@ -108,10 +173,10 @@ impl Show for Point:
         <li>
           Builtin <code className="font-mono">print</code>
         </li>
+        <li>Structs, classes, interfaces — see examples</li>
       </ul>
       <p>
-        Classes, interfaces, <code className="font-mono">match</code>, modules, and full
-        borrow checking are on the{" "}
+        Full <code className="font-mono">match</code>, modules, and complete borrow checking are on the{" "}
         <Link href="/docs/roadmap">v2 roadmap</Link>.
       </p>
 

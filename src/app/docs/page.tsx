@@ -13,9 +13,10 @@ export default function DocsIndexPage() {
       description="Guides for installing rpythonc, learning the language, and hacking on the compiler."
     >
       <p>
-        rPython is a <strong>compiled</strong>, memory-safe language — not an
-        interpreter like CPython. These pages mirror the main repo docs with a
-        focus on what you can run today.
+        rPython <strong>v2.0</strong> is a compiled, <strong>statically typed</strong>{" "}
+        language — not dynamic CPython. Annotated locals like{" "}
+        <code className="font-mono">a: str = &quot;hello&quot;</code> are checked at compile
+        time; <code className="font-mono">a: int = &quot;hello&quot;</code> is an error.
       </p>
 
       <div className="mt-8 space-y-10">

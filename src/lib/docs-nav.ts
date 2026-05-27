@@ -31,7 +31,12 @@ export const DOCS_NAV: DocSection[] = [
       {
         title: "Examples",
         href: "/docs/examples",
-        description: "hello, gcd, interfaces_demo",
+        description: "15+ programs — basics, OOP, HTTP sketches",
+      },
+      {
+        title: "Tutorials",
+        href: "/docs/tutorials",
+        description: "Static typing, OOP, HTTP roadmap, compiler tour",
       },
     ],
   },
@@ -41,7 +46,7 @@ export const DOCS_NAV: DocSection[] = [
       {
         title: "Language reference",
         href: "/docs/language",
-        description: "Classes, interfaces, compiled vs Python",
+        description: "Static types, classes, interfaces — not dynamic Python",
       },
     ],
   },

@@ -1,15 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { CodeBlock } from "@/components/code-block";
+import { getExampleById, RPY_EXAMPLES } from "@/lib/examples-catalog";
 
 const DEFAULT_SOURCE = `def main() -> int:
     print("hello, rPython")
     return 0`;
 
 export function PlaygroundClient() {
+  const searchParams = useSearchParams();
+  const exampleParam = searchParams.get("example");
+
   const [source, setSource] = useState(DEFAULT_SOURCE);
   const [filename, setFilename] = useState("playground.rpy");
+  const [selectedId, setSelectedId] = useState("hello");
+
+  useEffect(() => {
+    if (!exampleParam) return;
+    const ex = getExampleById(exampleParam);
+    if (ex) {
+      setSelectedId(ex.id);
+      setSource(ex.source);
+      setFilename(ex.filename);
+    }
+  }, [exampleParam]);
 
   const commands = useMemo(() => {
     const file = filename.trim() || "playground.rpy";
@@ -27,9 +43,31 @@ RPY`,
     };
   }, [source, filename]);
 
+  function loadExample(id: string) {
+    const ex = getExampleById(id);
+    if (!ex) return;
+    setSelectedId(id);
+    setSource(ex.source);
+    setFilename(ex.filename);
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="text-sm text-[var(--rpy-muted)]">
+          Load example{" "}
+          <select
+            value={selectedId}
+            onChange={(e) => loadExample(e.target.value)}
+            className="ml-2 max-w-xs rounded-lg border border-[var(--rpy-line)] bg-[var(--rpy-code)] px-3 py-1.5 font-mono text-sm text-[var(--rpy-ink)]"
+          >
+            {RPY_EXAMPLES.map((ex) => (
+              <option key={ex.id} value={ex.id}>
+                {ex.title} ({ex.status})
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="text-sm text-[var(--rpy-muted)]">
           Filename{" "}
           <input
@@ -48,7 +86,7 @@ RPY`,
         value={source}
         onChange={(e) => setSource(e.target.value)}
         spellCheck={false}
-        className="h-64 w-full resize-y rounded-xl border border-[var(--rpy-line)] bg-[var(--rpy-code)] p-4 font-mono text-sm leading-relaxed text-[var(--rpy-code-text)] outline-none focus:border-[var(--rpy-accent)]"
+        className="h-72 w-full resize-y rounded-xl border border-[var(--rpy-line)] bg-[var(--rpy-code)] p-4 font-mono text-sm leading-relaxed text-[var(--rpy-code-text)] outline-none focus:border-[var(--rpy-accent)]"
         aria-label="rPython source"
       />
 
@@ -70,18 +108,16 @@ RPY`,
         <button
           type="button"
           className="rounded-lg border border-[var(--rpy-line)] px-4 py-2 text-sm text-[var(--rpy-muted)] hover:text-[var(--rpy-ink)]"
-          onClick={() => setSource(DEFAULT_SOURCE)}
+          onClick={() => loadExample("hello")}
         >
-          Reset to hello.rpy
+          Reset to hello
         </button>
       </div>
 
       <CodeBlock title="1. Save to disk">{commands.save}</CodeBlock>
       <CodeBlock title="2. Run (interpreter)">{commands.run}</CodeBlock>
-      <CodeBlock title="Legacy run flag">{commands.runLegacy}</CodeBlock>
-      <CodeBlock title="3. Build native binary">{commands.build}</CodeBlock>
-      <CodeBlock title="Legacy build flag">{commands.buildLegacy}</CodeBlock>
-      <CodeBlock title="Inspect pipeline">{`${commands.tokens}\n${commands.mir}`}</CodeBlock>
+      <CodeBlock title="3. Build (native)">{commands.build}</CodeBlock>
+      <CodeBlock title="Optional: inspect MIR">{commands.mir}</CodeBlock>
     </div>
   );
 }

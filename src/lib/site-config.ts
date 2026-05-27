@@ -61,7 +61,7 @@ export const getSiteConfig = cache((): SiteConfig => {
     description: readEnv(
       "SITE_DESCRIPTION",
       "NEXT_PUBLIC_SITE_DESCRIPTION",
-      "rPython is a statically typed, memory-safe language compiled to native code via a Rust toolchain — not CPython. Write familiar Python-style code; ship fast binaries with rpythonc.",
+      "rPython is a statically typed (not dynamic), memory-safe language compiled to native code — not CPython. Python-shaped syntax; compile-time type checks; ship native binaries with rpythonc.",
     ),
     repoUrl,
     releasesUrl,

@@ -1,77 +1,101 @@
 import Link from "next/link";
-import { CodeBlock } from "@/components/code-block";
+import { ExampleCard } from "@/components/example-card";
 import { DocPage } from "@/components/doc-page";
+import {
+  CATEGORY_ORDER,
+  EXAMPLE_CATEGORY_LABELS,
+  examplesByCategory,
+  RPY_EXAMPLES,
+} from "@/lib/examples-catalog";
 import { getSiteConfig } from "@/lib/site-config";
 import { docBlob } from "@/lib/site";
 
-export const metadata = { title: "Examples" };
-
-const HELLO = `def main() -> int:
-    print("hello, rPython")
-    return 0`;
-
-const GCD = `def gcd(a: int, b: int) -> int:
-    while b != 0:
-        t = a % b
-        a = b
-        b = t
-    return a
-
-def main() -> int:
-    print(gcd(48, 18))
-    return 0`;
-
-const INTERFACES = `interface Show:
-    def show(self) -> str:
-        ...
-
-class Point:
-    x: int
-    y: int
-
-impl Show for Point:
-    def show(self) -> str:
-        return "Point"
-
-def main() -> int:
-    p = Point { x: 1, y: 2 }
-    print(p.show())
-    return 0`;
+export const metadata = {
+  title: "Examples",
+  description:
+    "Comprehensive rPython v2 examples — basics, OOP, control flow, HTTP sketches, and compiler introspection.",
+};
 
 export default async function ExamplesPage() {
   const site = getSiteConfig();
+  const byCategory = examplesByCategory();
 
   return (
     <DocPage
       title="Examples"
-      description="Sample .rpy programs from the main repository."
+      description={`${RPY_EXAMPLES.length} sample programs for rPython v2.0 — from hello world to HTTP API sketches.`}
     >
       <p>
         Clone{" "}
         <a href={site.repoUrl} target="_blank" rel="noopener noreferrer">
           {site.repoUrl}
-        </a>{" "}
-        or paste into the <Link href="/playground">playground</Link>.
+        </a>
+        , run with <code className="font-mono">rpythonc run examples/…</code>, or
+        paste into the{" "}
+        <Link href="/playground" className="text-[var(--rpy-accent)] hover:underline">
+          playground
+        </Link>
+        . Walk through guided{" "}
+        <Link href="/docs/tutorials" className="text-[var(--rpy-accent)] hover:underline">
+          tutorials
+        </Link>{" "}
+        for step-by-step lessons.
       </p>
 
-      <h2>hello.rpy</h2>
-      <p>Minimal program — lexer, parser, and interpreter path.</p>
-      <CodeBlock title="examples/hello.rpy">{HELLO}</CodeBlock>
-      <CodeBlock title="Run">{`rpythonc run examples/hello.rpy
-rpythonc build -o ./hello examples/hello.rpy && ./hello`}</CodeBlock>
+      <div className="not-prose my-6 flex flex-wrap gap-2">
+        <span className="pill pill-ok">Runs on v2.0</span>
+        <span className="pill pill-warn">Partial support</span>
+        <span className="pill border border-[var(--rpy-line)] text-[var(--rpy-muted)]">
+          Roadmap / sketch
+        </span>
+      </div>
 
-      <h2>gcd.rpy</h2>
-      <p>Euclid&apos;s algorithm — control flow, modulo, and calls.</p>
-      <CodeBlock title="examples/gcd.rpy">{GCD}</CodeBlock>
+      <nav className="card my-8">
+        <h2 className="!mt-0 text-base font-semibold text-[var(--rpy-ink)]">
+          On this page
+        </h2>
+        <ul className="mt-3 columns-2 gap-x-6 text-sm sm:columns-3">
+          {CATEGORY_ORDER.map((cat) => {
+            const items = byCategory.get(cat);
+            if (!items?.length) return null;
+            return (
+              <li key={cat} className="mb-3 break-inside-avoid">
+                <span className="font-medium text-[var(--rpy-accent-2)]">
+                  {EXAMPLE_CATEGORY_LABELS[cat]}
+                </span>
+                <ul className="mt-1 space-y-0.5 pl-0">
+                  {items.map((ex) => (
+                    <li key={ex.id}>
+                      <a href={`#${ex.id}`} className="text-[var(--rpy-muted)] hover:text-[var(--rpy-accent)]">
+                        {ex.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
 
-      <h2>interfaces_demo.rpy</h2>
+      {CATEGORY_ORDER.map((cat) => {
+        const items = byCategory.get(cat);
+        if (!items?.length) return null;
+        return (
+          <div key={cat}>
+            <h2>{EXAMPLE_CATEGORY_LABELS[cat]}</h2>
+            <div className="space-y-8">
+              {items.map((ex) => (
+                <ExampleCard key={ex.id} example={ex} />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <h2>Repository</h2>
       <p>
-        <code className="font-mono">interface</code> keyword and static dispatch (v2 target).
-      </p>
-      <CodeBlock title="examples/interfaces_demo.rpy">{INTERFACES}</CodeBlock>
-
-      <p>
-        More in the repo:{" "}
+        All filenames match{" "}
         <a
           href={`${site.repoUrl}/tree/${site.defaultBranch}/examples`}
           target="_blank"
@@ -79,7 +103,8 @@ rpythonc build -o ./hello examples/hello.rpy && ./hello`}</CodeBlock>
         >
           examples/
         </a>{" "}
-        · status:{" "}
+        in the main repo (roadmap sketches may exist only on the website until merged).
+        Implementation status:{" "}
         <a
           href={docBlob(site, "docs/IMPLEMENTATION_STATUS.md")}
           target="_blank"
