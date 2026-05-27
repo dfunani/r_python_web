@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
+/* rPython — Rust-inspired orange on dark navy */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rpy-bg: #0c0f14;
+  --rpy-bg-2: #121820;
+  --rpy-panel: #161d28;
+  --rpy-code: #0a0e14;
+  --rpy-ink: #f0f2f5;
+  --rpy-muted: #9aa3b2;
+  --rpy-code-text: #e8ddd6;
+  --rpy-accent: #f74c00;
+  --rpy-accent-2: #ce422b;
+  --rpy-ok: #6ee7a8;
+  --rpy-warn: #ffb347;
+  --rpy-line: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(165deg, var(--rpy-bg) 0%, var(--rpy-bg-2) 55%, #1a1210 100%);
+  color: var(--rpy-ink);
+  min-height: 100vh;
+}
+
+.doc-content h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--rpy-accent);
+}
+
+.doc-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rpy-accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.doc-content p {
+  color: var(--rpy-muted);
+  line-height: 1.65;
+}
+
+.doc-content ul,
+.doc-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+  color: var(--rpy-muted);
+}
+
+.doc-content li {
+  margin: 0.35rem 0;
+}
+
+.doc-content a {
+  color: var(--rpy-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.doc-content a:hover {
+  color: var(--rpy-accent-2);
+}
+
+.doc-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}
+
+.doc-content th,
+.doc-content td {
+  border-bottom: 1px solid var(--rpy-line);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.doc-content th {
+  color: var(--rpy-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.doc-content strong {
+  color: var(--rpy-ink);
+  font-weight: 600;
+}
+
+.doc-content code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.9em;
+  color: var(--rpy-code-text);
+}
+
+.card {
+  border: 1px solid var(--rpy-line);
+  border-radius: 1rem;
+  background: var(--rpy-panel);
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid var(--rpy-line);
+  padding: 0.15rem 0.65rem;
+  font-size: 0.75rem;
+  color: var(--rpy-muted);
+}
+
+.pill-ok {
+  color: var(--rpy-ok);
+  border-color: rgba(110, 231, 168, 0.25);
+  background: rgba(110, 231, 168, 0.08);
+}
+
+.pill-warn {
+  color: var(--rpy-warn);
+  border-color: rgba(255, 179, 71, 0.25);
+  background: rgba(255, 179, 71, 0.08);
 }
